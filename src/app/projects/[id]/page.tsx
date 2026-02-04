@@ -1,13 +1,15 @@
 'use client'
 
-import { use, Suspense } from 'react'
+import { use, Suspense, useState, useCallback, useEffect, useRef } from 'react'
 import { ApplicationShell } from '@/components/layout/ApplicationShell'
 import { TopBar } from '@/components/layout/TopBar'
 import { ThreePaneLayout } from '@/components/layout/ThreePaneLayout'
 import { EventList } from '@/components/features/events/EventList'
+import { EventEditor } from '@/components/features/editor/EventEditor'
 import { useProject } from '@/hooks/useProject'
 import { useEvents, Event } from '@/hooks/useEvents'
 import { useSelectedEvent } from '@/hooks/useSelectedEvent'
+import { SaveStatus } from '@/types'
 import Link from 'next/link'
 
 interface PageProps {
@@ -15,7 +17,7 @@ interface PageProps {
 }
 
 function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
-  const { project, events: initialEvents, isLoading, error, saveStatus, updateTitle } =
+  const { project, events: initialEvents, isLoading, error, saveStatus: projectSaveStatus, updateTitle } =
     useProject(projectId)
   const { selectedEventId, selectEvent } = useSelectedEvent()
   const {
@@ -24,20 +26,47 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
     addEvent,
     deleteEvent,
     reorderEvents,
+    updateEvent,
     isLoading: eventsLoading,
   } = useEvents(projectId, initialEvents as Event[])
 
+  const [editorSaveStatus, setEditorSaveStatus] = useState<SaveStatus>('idle')
+  const hasInitializedEvents = useRef(false)
+
+  // Combine save statuses - show the most "active" one
+  const combinedSaveStatus: SaveStatus =
+    editorSaveStatus === 'saving' || projectSaveStatus === 'saving'
+      ? 'saving'
+      : editorSaveStatus === 'error' || projectSaveStatus === 'error'
+        ? 'error'
+        : editorSaveStatus === 'saved' || projectSaveStatus === 'saved'
+          ? 'saved'
+          : 'idle'
+
   // Sync events when initial data loads
-  if (initialEvents.length > 0 && events.length === 0) {
-    setEvents(initialEvents as Event[])
-  }
+  useEffect(() => {
+    if (initialEvents.length > 0 && !hasInitializedEvents.current) {
+      hasInitializedEvents.current = true
+      setEvents(initialEvents as Event[])
+    }
+  }, [initialEvents, setEvents])
 
   // Auto-select first event if none selected
-  if (events.length > 0 && !selectedEventId) {
-    selectEvent(events[0].id)
-  }
+  useEffect(() => {
+    if (events.length > 0 && !selectedEventId) {
+      selectEvent(events[0].id)
+    }
+  }, [events, selectedEventId, selectEvent])
 
-  const selectedEvent = events.find((e) => e.id === selectedEventId)
+  const selectedEvent = events.find((e) => e.id === selectedEventId) || null
+
+  // Handle event updates from the editor
+  const handleEventUpdate = useCallback(
+    async (eventId: string, data: { title?: string; content?: string; locked?: boolean; metadata?: string }) => {
+      await updateEvent(eventId, data)
+    },
+    [updateEvent]
+  )
 
   if (isLoading) {
     return (
@@ -81,41 +110,11 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
   )
 
   const middlePane = (
-    <div className="h-full flex flex-col">
-      {selectedEvent ? (
-        <>
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">
-              {selectedEvent.title}
-            </h2>
-          </div>
-          <div className="flex-1 overflow-auto p-6">
-            <div className="prose max-w-none">
-              {selectedEvent.content ? (
-                <p className="text-gray-600">{selectedEvent.content}</p>
-              ) : (
-                <p className="text-gray-400 italic">
-                  No content yet. The event editor will be available in Phase 4.
-                </p>
-              )}
-            </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="p-6 border-b border-gray-200">
-            <p className="text-gray-400 text-sm">Select an event to edit</p>
-          </div>
-          <div className="flex-1 overflow-auto p-6">
-            <div className="prose max-w-none">
-              <p className="text-gray-600">
-                The event editor will be available in Phase 4.
-              </p>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+    <EventEditor
+      event={selectedEvent}
+      onEventUpdate={handleEventUpdate}
+      onSaveStatusChange={setEditorSaveStatus}
+    />
   )
 
   const rightPane = (
@@ -143,7 +142,7 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
       <TopBar
         title={project.title}
         onTitleChange={updateTitle}
-        saveStatus={saveStatus}
+        saveStatus={combinedSaveStatus}
         showExport
         showCommandBar
       />
