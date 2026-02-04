@@ -25,6 +25,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const event = await createEvent(projectId, {
       title: body.title,
       content: body.content,
+      metadata: body.metadata,
+      source: body.source,
       afterEventId: body.afterEventId,
     })
 

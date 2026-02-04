@@ -15,6 +15,11 @@ export interface Event {
   updatedAt: string
 }
 
+interface SplitEventData {
+  title: string
+  content: string
+}
+
 interface UseEventsReturn {
   events: Event[]
   setEvents: React.Dispatch<React.SetStateAction<Event[]>>
@@ -24,6 +29,7 @@ interface UseEventsReturn {
   deleteEvent: (eventId: string) => Promise<boolean>
   reorderEvents: (eventIds: string[]) => Promise<boolean>
   updateEvent: (eventId: string, data: { title?: string; content?: string }) => Promise<Event | null>
+  splitEvent: (eventId: string, newEvents: SplitEventData[]) => Promise<boolean>
 }
 
 export function useEvents(
@@ -183,6 +189,80 @@ export function useEvents(
     [projectId]
   )
 
+  const splitEventFn = useCallback(
+    async (eventId: string, newEvents: SplitEventData[]): Promise<boolean> => {
+      try {
+        setIsLoading(true)
+        setError(null)
+
+        // Find the position of the event to split
+        const eventIndex = events.findIndex((e) => e.id === eventId)
+        if (eventIndex === -1) {
+          throw new Error('Event not found')
+        }
+
+        // Get the ID of the event before this one (for positioning new events)
+        const beforeEventId = eventIndex > 0 ? events[eventIndex - 1].id : undefined
+
+        // Delete the original event
+        const deleteResponse = await fetch(
+          `/api/projects/${projectId}/events/${eventId}`,
+          { method: 'DELETE' }
+        )
+
+        if (!deleteResponse.ok) {
+          throw new Error('Failed to delete original event')
+        }
+
+        // Create new events in order
+        const createdEvents: Event[] = []
+        let afterEventId = beforeEventId
+
+        for (const eventData of newEvents) {
+          const createResponse = await fetch(`/api/projects/${projectId}/events`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: eventData.title,
+              content: eventData.content,
+              source: 'ai',
+              afterEventId,
+            }),
+          })
+
+          if (!createResponse.ok) {
+            throw new Error('Failed to create new event')
+          }
+
+          const { event } = await createResponse.json()
+          createdEvents.push(event)
+          afterEventId = event.id
+        }
+
+        // Update local state
+        setEvents((prev) => {
+          const newEventsList = [...prev]
+          // Remove the original event
+          const removeIndex = newEventsList.findIndex((e) => e.id === eventId)
+          if (removeIndex !== -1) {
+            newEventsList.splice(removeIndex, 1, ...createdEvents)
+          }
+          // Update orderIndex for consistency
+          return newEventsList.map((e, i) => ({ ...e, orderIndex: i }))
+        })
+
+        return true
+      } catch (err) {
+        console.error('Failed to split event:', err)
+        setError('Failed to split event')
+        return false
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [projectId, events]
+  )
+
   return {
     events,
     setEvents,
@@ -192,5 +272,6 @@ export function useEvents(
     deleteEvent: deleteEventFn,
     reorderEvents: reorderEventsFn,
     updateEvent: updateEventFn,
+    splitEvent: splitEventFn,
   }
 }

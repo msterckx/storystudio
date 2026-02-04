@@ -27,6 +27,7 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
     deleteEvent,
     reorderEvents,
     updateEvent,
+    splitEvent,
     isLoading: eventsLoading,
   } = useEvents(projectId, initialEvents as Event[])
 
@@ -66,6 +67,19 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
       await updateEvent(eventId, data)
     },
     [updateEvent]
+  )
+
+  // Handle split events from AI action
+  const handleSplitEvent = useCallback(
+    async (eventId: string, newEvents: { title: string; content: string }[]) => {
+      const result = await splitEvent(eventId, newEvents)
+      if (result) {
+        // Select the first of the new events
+        selectEvent(events[0]?.id || null)
+      }
+      return result
+    },
+    [splitEvent, selectEvent, events]
   )
 
   if (isLoading) {
@@ -112,7 +126,9 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
   const middlePane = (
     <EventEditor
       event={selectedEvent}
+      allEvents={events}
       onEventUpdate={handleEventUpdate}
+      onSplitEvent={handleSplitEvent}
       onSaveStatusChange={setEditorSaveStatus}
     />
   )

@@ -5,6 +5,7 @@ import { EventTitleInput } from './EventTitleInput'
 import { RichTextEditor } from './RichTextEditor'
 import { MetadataPanel, EventMetadata } from './MetadataPanel'
 import { LockToggle } from './LockToggle'
+import { AIActionsToolbar } from '../ai-actions/AIActionsToolbar'
 import { useAutoSave } from '@/hooks/useAutoSave'
 import { SaveStatus } from '@/types'
 
@@ -17,9 +18,16 @@ interface Event {
   source: 'ai' | 'user'
 }
 
+interface SplitEventData {
+  title: string
+  content: string
+}
+
 interface EventEditorProps {
   event: Event | null
+  allEvents?: Event[]
   onEventUpdate: (eventId: string, data: { title?: string; content?: string; locked?: boolean; metadata?: string }) => Promise<void>
+  onSplitEvent?: (eventId: string, newEvents: SplitEventData[]) => Promise<boolean>
   onSaveStatusChange?: (status: SaveStatus) => void
 }
 
@@ -35,11 +43,15 @@ function parseMetadata(metadataStr: string): EventMetadata {
 // Inner component that handles a single event - keyed by event ID
 function EventEditorInner({
   event,
+  allEvents,
   onEventUpdate,
+  onSplitEvent,
   onSaveStatusChange,
 }: {
   event: Event
+  allEvents?: Event[]
   onEventUpdate: (eventId: string, data: { title?: string; content?: string; locked?: boolean; metadata?: string }) => Promise<void>
+  onSplitEvent?: (eventId: string, newEvents: SplitEventData[]) => Promise<boolean>
   onSaveStatusChange?: (status: SaveStatus) => void
 }) {
   // Use refs to track pending changes without triggering re-renders
@@ -107,6 +119,32 @@ function EventEditorInner({
     await onEventUpdate(event.id, { locked: newLocked })
   }, [event.id, localLocked, onEventUpdate])
 
+  // Handle AI content change
+  const handleAIContentChange = useCallback(
+    (newContent: string) => {
+      setLocalContent(newContent)
+      pendingChanges.current.content = newContent
+      triggerSave()
+    },
+    [triggerSave]
+  )
+
+  // Handle split
+  const handleSplitApply = useCallback(
+    async (newEvents: SplitEventData[]) => {
+      if (onSplitEvent) {
+        await onSplitEvent(event.id, newEvents)
+      }
+    },
+    [event.id, onSplitEvent]
+  )
+
+  // Build project context for AI actions
+  const projectContext = allEvents
+    ?.filter((e) => e.id !== event.id)
+    .map((e) => e.title)
+    .join(', ')
+
   return (
     <div className="h-full flex flex-col">
       {/* Header with title and lock toggle */}
@@ -140,18 +178,22 @@ function EventEditorInner({
         />
       </div>
 
-      {/* AI Actions placeholder */}
-      <div className="p-4 border-t border-gray-200 bg-gray-50">
-        <p className="text-sm text-gray-500 text-center">
-          AI actions will be available in Phase 6
-        </p>
-      </div>
+      {/* AI Actions */}
+      <AIActionsToolbar
+        eventId={event.id}
+        eventTitle={localTitle}
+        eventContent={localContent}
+        isLocked={localLocked}
+        projectContext={projectContext}
+        onContentChange={handleAIContentChange}
+        onSplitApply={handleSplitApply}
+      />
     </div>
   )
 }
 
 // Main component that handles empty state and keys the inner component
-export function EventEditor({ event, onEventUpdate, onSaveStatusChange }: EventEditorProps) {
+export function EventEditor({ event, allEvents, onEventUpdate, onSplitEvent, onSaveStatusChange }: EventEditorProps) {
   // Memoize empty state component
   const emptyState = useMemo(() => (
     <div className="h-full flex flex-col">
@@ -187,7 +229,9 @@ export function EventEditor({ event, onEventUpdate, onSaveStatusChange }: EventE
     <EventEditorInner
       key={event.id}
       event={event}
+      allEvents={allEvents}
       onEventUpdate={onEventUpdate}
+      onSplitEvent={onSplitEvent}
       onSaveStatusChange={onSaveStatusChange}
     />
   )

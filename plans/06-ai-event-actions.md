@@ -1,5 +1,7 @@
 # Phase 6: AI Event Actions
 
+**Status: Complete**
+
 ## Goal
 Add per-event AI actions that let users expand, rewrite, split, and regenerate event content. All changes preview before applying.
 
@@ -8,52 +10,52 @@ Add per-event AI actions that let users expand, rewrite, split, and regenerate e
 ## Deliverables
 
 ### 6.1 AI Actions Toolbar
-- [ ] Action bar at bottom of EventEditor
-- [ ] Buttons: Expand, Rewrite, Split, Regenerate
-- [ ] Disabled state when:
+- [x] Action bar at bottom of EventEditor
+- [x] Buttons: Expand, Rewrite, Split, Regenerate
+- [x] Disabled state when:
   - Event is locked
   - Another action is in progress
   - No event selected
 
 ### 6.2 Expand Action
-- [ ] "Expand" button triggers expansion
-- [ ] API call to expand content
-- [ ] Preview modal shows before/after
-- [ ] Apply or cancel
+- [x] "Expand" button triggers expansion
+- [x] API call to expand content
+- [x] Preview modal shows before/after
+- [x] Apply or cancel
 
 ### 6.3 Rewrite Action
-- [ ] "Rewrite" opens options dropdown:
+- [x] "Rewrite" opens options dropdown:
   - Make simpler
   - Make more academic
   - Make more engaging
   - Shorten
-- [ ] API call with selected option
-- [ ] Preview modal shows before/after
+- [x] API call with selected option
+- [x] Preview modal shows before/after
 
 ### 6.4 Split Action
-- [ ] "Split" only enabled for longer events (>200 words)
-- [ ] AI suggests 2-3 new events
-- [ ] Preview shows proposed split
-- [ ] Apply replaces original with new events
+- [x] "Split" only enabled for longer events (>200 words)
+- [x] AI suggests 2-3 new events
+- [x] Preview shows proposed split
+- [x] Apply replaces original with new events
 
 ### 6.5 Regenerate Action
-- [ ] "Regenerate" opens instruction modal
-- [ ] Text input for custom instructions
-- [ ] AI generates new content based on instructions
-- [ ] Preview shows before/after
+- [x] "Regenerate" opens instruction modal
+- [x] Text input for custom instructions
+- [x] AI generates new content based on instructions
+- [x] Preview shows before/after
 
 ### 6.6 Preview Modal
-- [ ] `AIPreviewModal` component
-- [ ] Side-by-side comparison:
+- [x] `AIPreviewModal` component
+- [x] Side-by-side comparison:
   - Left: Current content
   - Right: Proposed content (highlighted changes)
-- [ ] "Apply Changes" and "Cancel" buttons
-- [ ] Escape key closes modal
+- [x] "Apply Changes" and "Cancel" buttons
+- [x] Escape key closes modal
 
 ### 6.7 Loading States
-- [ ] Button shows spinner during API call
-- [ ] Other actions disabled
-- [ ] Cancel option available
+- [x] Button shows spinner during API call
+- [x] Other actions disabled
+- [x] Cancel option available
 
 ---
 
@@ -213,29 +215,29 @@ Aim for 50% of the original length.
 
 After this phase, verify:
 
-- [ ] AI actions toolbar appears below editor
-- [ ] Actions disabled when event is locked
-- [ ] **Expand:**
-  - [ ] Click shows loading state
-  - [ ] Preview modal opens with comparison
-  - [ ] Can apply or cancel
-  - [ ] Applied changes appear in editor
-- [ ] **Rewrite:**
-  - [ ] Dropdown shows style options
-  - [ ] Each option produces different result
-  - [ ] Preview shows before/after
-- [ ] **Split:**
-  - [ ] Only enabled for longer events
-  - [ ] Shows proposed new events
-  - [ ] Applying creates multiple events in list
-- [ ] **Regenerate:**
-  - [ ] Instructions modal opens
-  - [ ] Custom instructions affect output
-  - [ ] Preview shows result
-- [ ] After applying changes:
-  - [ ] Event marked as AI-generated (or re-marked)
-  - [ ] Auto-save triggers
-- [ ] Can cancel any action without changes
+- [x] AI actions toolbar appears below editor
+- [x] Actions disabled when event is locked
+- [x] **Expand:**
+  - [x] Click shows loading state
+  - [x] Preview modal opens with comparison
+  - [x] Can apply or cancel
+  - [x] Applied changes appear in editor
+- [x] **Rewrite:**
+  - [x] Dropdown shows style options
+  - [x] Each option produces different result
+  - [x] Preview shows before/after
+- [x] **Split:**
+  - [x] Only enabled for longer events
+  - [x] Shows proposed new events
+  - [x] Applying creates multiple events in list
+- [x] **Regenerate:**
+  - [x] Instructions modal opens
+  - [x] Custom instructions affect output
+  - [x] Preview shows result
+- [x] After applying changes:
+  - [x] Event marked as AI-generated (or re-marked)
+  - [x] Auto-save triggers
+- [x] Can cancel any action without changes
 
 ---
 
