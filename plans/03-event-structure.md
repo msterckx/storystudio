@@ -1,5 +1,7 @@
 # Phase 3: Event Structure (Left Pane)
 
+**Status: Complete**
+
 ## Goal
 Build the left pane that displays and manages the story's event structure. Users can add, remove, reorder, and select events.
 
@@ -8,46 +10,46 @@ Build the left pane that displays and manages the story's event structure. Users
 ## Deliverables
 
 ### 3.1 Event List Display
-- [ ] `EventList` component in left pane
-- [ ] `EventListItem` component showing:
+- [x] `EventList` component in left pane
+- [x] `EventListItem` component showing:
   - Order number
   - Event title (truncated if long)
   - State indicators (selected, AI-generated, locked)
-- [ ] Scrollable list when events exceed viewport
-- [ ] Empty state: "No events yet. Add your first event."
+- [x] Scrollable list when events exceed viewport
+- [x] Empty state: "No events yet. Add your first event."
 
 ### 3.2 Event Selection
-- [ ] Click event to select
-- [ ] Selected event highlighted
-- [ ] Selection stored in URL or context
-- [ ] Middle pane updates when selection changes
+- [x] Click event to select
+- [x] Selected event highlighted
+- [x] Selection stored in URL or context
+- [x] Middle pane updates when selection changes
 
 ### 3.3 Add Event
-- [ ] "Add Event" button at bottom of list
-- [ ] Creates new event with default title "New Event"
-- [ ] New event appended to end
-- [ ] New event automatically selected
-- [ ] API route: `POST /api/projects/[id]/events`
+- [x] "Add Event" button at bottom of list
+- [x] Creates new event with default title "New Event"
+- [x] New event appended to end
+- [x] New event automatically selected
+- [x] API route: `POST /api/projects/[id]/events`
 
 ### 3.4 Delete Event
-- [ ] Delete icon on hover/focus
-- [ ] Confirmation dialog for deletion
-- [ ] API route: `DELETE /api/projects/[id]/events/[eventId]`
-- [ ] Select adjacent event after deletion
-- [ ] Handle deleting last event (show empty state)
+- [x] Delete icon on hover/focus
+- [x] Confirmation dialog for deletion
+- [x] API route: `DELETE /api/projects/[id]/events/[eventId]`
+- [x] Select adjacent event after deletion
+- [x] Handle deleting last event (show empty state)
 
 ### 3.5 Drag-and-Drop Reordering
-- [ ] Install and configure dnd-kit
-- [ ] Drag handle visible on hover
-- [ ] Visual feedback during drag
-- [ ] Drop zones between events
-- [ ] API route: `PATCH /api/projects/[id]/events/reorder`
-- [ ] Optimistic UI update
+- [x] Install and configure dnd-kit
+- [x] Drag handle visible on hover
+- [x] Visual feedback during drag
+- [x] Drop zones between events
+- [x] API route: `PATCH /api/projects/[id]/events/reorder`
+- [x] Optimistic UI update
 
 ### 3.6 Event State Indicators
-- [ ] AI badge for AI-generated events
-- [ ] Lock icon for locked events
-- [ ] Unsaved dot indicator (if applicable)
+- [x] AI badge for AI-generated events
+- [x] Lock icon for locked events
+- [x] Unsaved dot indicator (if applicable)
 
 ---
 
@@ -146,19 +148,19 @@ export async function reorderEvents(projectId: string, eventIds: string[]): Prom
 
 After this phase, verify:
 
-- [ ] Empty project shows "No events" message
-- [ ] Can add a new event
-- [ ] New event appears in list with default title
-- [ ] New event is automatically selected
-- [ ] Can click different events to select them
-- [ ] Selected event is visually highlighted
-- [ ] Can see order numbers on events
-- [ ] Can drag events to reorder
-- [ ] Reorder persists after page refresh
-- [ ] Can delete an event
-- [ ] Confirmation appears before deletion
-- [ ] After deletion, adjacent event is selected
-- [ ] Long titles are truncated in list
+- [x] Empty project shows "No events" message
+- [x] Can add a new event
+- [x] New event appears in list with default title
+- [x] New event is automatically selected
+- [x] Can click different events to select them
+- [x] Selected event is visually highlighted
+- [x] Can see order numbers on events
+- [x] Can drag events to reorder
+- [x] Reorder persists after page refresh
+- [x] Can delete an event
+- [x] Confirmation appears before deletion
+- [x] After deletion, adjacent event is selected
+- [x] Long titles are truncated in list
 
 ---
 
