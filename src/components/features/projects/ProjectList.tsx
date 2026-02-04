@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { ProjectCard } from './ProjectCard'
-import { CreateProjectModal } from './CreateProjectModal'
 import { DeleteProjectDialog } from './DeleteProjectDialog'
+import { GenerateStoryModal } from '../generation/GenerateStoryModal'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import { useRouter } from 'next/navigation'
@@ -26,11 +26,11 @@ export function ProjectList({ initialProjects }: ProjectListProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Project | null>(null)
 
-  const handleCreate = async (title: string) => {
+  const handleStartBlank = async () => {
     const response = await fetch('/api/projects', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title }),
+      body: JSON.stringify({ title: 'Untitled Project' }),
     })
 
     if (!response.ok) {
@@ -38,6 +38,7 @@ export function ProjectList({ initialProjects }: ProjectListProps) {
     }
 
     const { project } = await response.json()
+    setIsCreateModalOpen(false)
     router.push(`/projects/${project.id}`)
   }
 
@@ -110,10 +111,10 @@ export function ProjectList({ initialProjects }: ProjectListProps) {
         </div>
       )}
 
-      <CreateProjectModal
+      <GenerateStoryModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onCreate={handleCreate}
+        onStartBlank={handleStartBlank}
       />
 
       <DeleteProjectDialog

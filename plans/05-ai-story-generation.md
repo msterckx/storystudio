@@ -1,5 +1,7 @@
 # Phase 5: AI Story Generation
 
+**Status: Complete**
+
 ## Goal
 Enable users to generate a complete story outline from a text prompt. This is the primary entry point for new content creation.
 
@@ -8,37 +10,37 @@ Enable users to generate a complete story outline from a text prompt. This is th
 ## Deliverables
 
 ### 5.1 Story Generation Modal
-- [ ] Update "New Project" flow to include generation option
-- [ ] `GenerateStoryModal` with:
+- [x] Update "New Project" flow to include generation option
+- [x] `GenerateStoryModal` with:
   - Prompt textarea
   - Settings dropdowns:
     - Audience level (Elementary → College)
     - Tone (Formal, Conversational, Academic, Storytelling)
     - Length (Brief 5-7, Standard 8-12, Detailed 13-20)
   - "Generate" and "Start Blank" buttons
-- [ ] Placeholder examples in prompt field
+- [x] Placeholder examples in prompt field
 
 ### 5.2 AI Integration Setup
-- [ ] Environment variable for API key (`OPENAI_API_KEY` or `ANTHROPIC_API_KEY`)
-- [ ] AI service abstraction layer
-- [ ] API route: `POST /api/ai/generate-story`
-- [ ] Rate limiting / error handling
+- [x] Environment variable for API key (`OPENAI_API_KEY` or `ANTHROPIC_API_KEY`)
+- [x] AI service abstraction layer
+- [x] API route: `POST /api/ai/generate-story`
+- [x] Rate limiting / error handling
 
 ### 5.3 Story Generation Prompt
-- [ ] System prompt for story generation
-- [ ] Include audience, tone, length constraints
-- [ ] Request structured JSON output
-- [ ] Parse response into events
+- [x] System prompt for story generation
+- [x] Include audience, tone, length constraints
+- [x] Request structured JSON output
+- [x] Parse response into events
 
 ### 5.4 Generation UI States
-- [ ] Loading state with progress message
-- [ ] Success: navigate to project with events
-- [ ] Error: show message, allow retry
-- [ ] Cancel: abort request, stay on modal
+- [x] Loading state with progress message
+- [x] Success: navigate to project with events
+- [x] Error: show message, allow retry
+- [x] Cancel: abort request, stay on modal
 
 ### 5.5 Project Settings Storage
-- [ ] Save generation settings to project
-- [ ] Display settings in project workspace (read-only for now)
+- [x] Save generation settings to project
+- [x] Display settings in project workspace (read-only for now)
 
 ---
 
@@ -143,21 +145,21 @@ export const ai: AIProvider = new OpenAIProvider()
 
 After this phase, verify:
 
-- [ ] "New Project" shows generation modal
-- [ ] Can enter a prompt (e.g., "The Fall of Rome")
-- [ ] Can select audience level
-- [ ] Can select tone
-- [ ] Can select target length
-- [ ] "Generate" shows loading state
-- [ ] Loading shows progress message
-- [ ] Successful generation creates project with events
-- [ ] Events appear in left pane
-- [ ] Event content is relevant to prompt
-- [ ] Settings are saved to project
-- [ ] Can cancel generation
-- [ ] Errors show helpful messages
-- [ ] Can retry after error
-- [ ] "Start Blank" creates empty project
+- [x] "New Project" shows generation modal
+- [x] Can enter a prompt (e.g., "The Fall of Rome")
+- [x] Can select audience level
+- [x] Can select tone
+- [x] Can select target length
+- [x] "Generate" shows loading state
+- [x] Loading shows progress message
+- [x] Successful generation creates project with events
+- [x] Events appear in left pane
+- [x] Event content is relevant to prompt
+- [x] Settings are saved to project
+- [x] Can cancel generation
+- [x] Errors show helpful messages
+- [x] Can retry after error
+- [x] "Start Blank" creates empty project
 
 ---
 

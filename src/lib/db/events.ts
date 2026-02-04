@@ -21,7 +21,13 @@ export async function getEvent(id: string) {
 
 export async function createEvent(
   projectId: string,
-  data?: { title?: string; content?: string; afterEventId?: string }
+  data?: {
+    title?: string
+    content?: string
+    metadata?: string
+    source?: 'ai' | 'user'
+    afterEventId?: string
+  }
 ) {
   const now = new Date()
   const id = uuid()
@@ -62,8 +68,8 @@ export async function createEvent(
       orderIndex,
       title: data?.title || 'New Event',
       content: data?.content || '',
-      metadata: '{}',
-      source: 'user',
+      metadata: data?.metadata || '{}',
+      source: data?.source || 'user',
       locked: false,
       createdAt: now,
       updatedAt: now,
