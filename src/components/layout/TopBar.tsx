@@ -11,6 +11,7 @@ interface TopBarProps {
   saveStatus?: SaveStatus
   showExport?: boolean
   showCommandBar?: boolean
+  onCommandBarClick?: () => void
 }
 
 export function TopBar({
@@ -19,6 +20,7 @@ export function TopBar({
   saveStatus = 'idle',
   showExport = false,
   showCommandBar = false,
+  onCommandBarClick,
 }: TopBarProps) {
   return (
     <header className="h-14 border-b border-gray-200 bg-white flex items-center px-4 gap-4">
@@ -58,16 +60,22 @@ export function TopBar({
 
       {/* Command Bar Trigger */}
       {showCommandBar && (
-        <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2">
-          <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <span className="text-gray-500">⌘K</span>
-        </Button>
+        <div className="hidden sm:block">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onCommandBarClick}
+          >
+            <svg className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fillRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="text-gray-500">⌘K</span>
+          </Button>
+        </div>
       )}
 
       {/* Export Button */}

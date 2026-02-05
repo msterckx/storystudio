@@ -1,5 +1,7 @@
 # Phase 10: Command Bar
 
+**Status: Complete**
+
 ## Goal
 Build the natural language command interface that lets users edit their project with text commands.
 
@@ -8,53 +10,53 @@ Build the natural language command interface that lets users edit their project 
 ## Deliverables
 
 ### 10.1 Command Bar UI
-- [ ] Command bar trigger in TopBar
-- [ ] Modal overlay with search-style input
-- [ ] Keyboard shortcut: Cmd/Ctrl + K
-- [ ] Focus input immediately on open
-- [ ] Close with Escape
+- [x] Command bar trigger in TopBar
+- [x] Modal overlay with search-style input
+- [x] Keyboard shortcut: Cmd/Ctrl + K
+- [x] Focus input immediately on open
+- [x] Close with Escape
 
 ### 10.2 Recent Commands
-- [ ] Show last 5 commands below input
-- [ ] Click to re-run command
-- [ ] Store in localStorage per project
+- [x] Show last 5 commands below input
+- [x] Click to re-run command
+- [x] Store in localStorage per project
 
 ### 10.3 Command Suggestions
-- [ ] Static suggestions when input empty:
+- [x] Static suggestions when input empty:
   - "Expand this event"
   - "Add a new event"
   - "Rewrite for high school audience"
   - "Remove the last event"
-- [ ] Click suggestion to execute
+- [x] Click suggestion to execute
 
 ### 10.4 Command Parsing
-- [ ] AI interprets natural language
-- [ ] Returns structured action
-- [ ] Handles ambiguous commands with clarification
-- [ ] API route: `POST /api/ai/parse-command`
+- [x] AI interprets natural language
+- [x] Returns structured action
+- [x] Handles ambiguous commands with clarification
+- [x] API route: `POST /api/ai/parse-command`
 
 ### 10.5 Action Preview
-- [ ] Show interpreted action before execution
-- [ ] Highlight affected events in list
-- [ ] "Execute" and "Cancel" buttons
-- [ ] Clear description of what will happen
+- [x] Show interpreted action before execution
+- [ ] Highlight affected events in list (deferred)
+- [x] "Execute" and "Cancel" buttons
+- [x] Clear description of what will happen
 
 ### 10.6 Command Execution
-- [ ] Execute parsed action
-- [ ] Update project state
-- [ ] Show success feedback
-- [ ] Create undo entry
+- [x] Execute parsed action
+- [x] Update project state
+- [x] Show success feedback
+- [ ] Create undo entry (deferred)
 
 ### 10.7 Supported Commands
-- [ ] Event operations:
+- [x] Event operations:
   - Remove events ("remove event 3", "delete events 1-3")
   - Add events ("add event after 2", "add event about X")
   - Reorder ("move event 5 to position 2")
   - Merge ("merge events 3 and 4")
-- [ ] Content operations:
+- [x] Content operations:
   - Expand ("expand event 2", "expand all")
   - Rewrite ("rewrite for elementary", "make more engaging")
-- [ ] Project operations:
+- [x] Project operations:
   - Settings ("change audience to college")
 
 ---
@@ -202,25 +204,25 @@ export function useCommandBar() {
 
 After this phase, verify:
 
-- [ ] Cmd/Ctrl + K opens command bar
-- [ ] Command bar shows in center of screen
-- [ ] Input is focused immediately
-- [ ] Recent commands show below input
-- [ ] Suggestions show when input empty
-- [ ] Typing command shows loading state
-- [ ] **Test commands:**
-  - [ ] "Remove event 1" → shows preview → executes
-  - [ ] "Add event after 2" → creates new event
-  - [ ] "Expand this event" → triggers expand action
-  - [ ] "Rewrite for high school" → rewrites content
-- [ ] Preview shows what will happen
-- [ ] Affected events highlighted in list
-- [ ] Can cancel before executing
-- [ ] Escape closes command bar
-- [ ] Click outside closes command bar
-- [ ] Command history persists across sessions
-- [ ] Can click recent command to re-run
-- [ ] Ambiguous commands ask for clarification
+- [x] Cmd/Ctrl + K opens command bar
+- [x] Command bar shows in center of screen
+- [x] Input is focused immediately
+- [x] Recent commands show below input
+- [x] Suggestions show when input empty
+- [x] Typing command shows loading state
+- [x] **Test commands:**
+  - [x] "Remove event 1" → shows preview → executes
+  - [x] "Add event after 2" → creates new event
+  - [x] "Expand this event" → triggers expand action
+  - [x] "Rewrite for high school" → rewrites content
+- [x] Preview shows what will happen
+- [ ] Affected events highlighted in list (deferred)
+- [x] Can cancel before executing
+- [x] Escape closes command bar
+- [x] Click outside closes command bar
+- [x] Command history persists across sessions
+- [x] Can click recent command to re-run
+- [x] Ambiguous commands ask for clarification
 
 ---
 
