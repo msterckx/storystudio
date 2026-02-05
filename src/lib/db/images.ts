@@ -153,6 +153,26 @@ export async function getDismissedImageIds(eventId: string): Promise<string[]> {
   return rows.map((r) => r.imageId)
 }
 
+// Update image-event association (explanation, lock, order)
+export async function updateEventImage(
+  eventId: string,
+  imageId: string,
+  data: { explanation?: string; explanationLocked?: boolean; orderIndex?: number }
+) {
+  const updates: Record<string, unknown> = {}
+
+  if (data.explanation !== undefined) updates.explanation = data.explanation
+  if (data.explanationLocked !== undefined) updates.explanationLocked = data.explanationLocked
+  if (data.orderIndex !== undefined) updates.orderIndex = data.orderIndex
+
+  if (Object.keys(updates).length === 0) return
+
+  await db
+    .update(eventImages)
+    .set(updates)
+    .where(and(eq(eventImages.eventId, eventId), eq(eventImages.imageId, imageId)))
+}
+
 // Get selected images for an event
 export async function getSelectedImages(eventId: string) {
   const rows = await db
@@ -160,6 +180,7 @@ export async function getSelectedImages(eventId: string) {
       imageId: eventImages.imageId,
       selected: eventImages.selected,
       explanation: eventImages.explanation,
+      explanationLocked: eventImages.explanationLocked,
       orderIndex: eventImages.orderIndex,
       sourceUrl: images.sourceUrl,
       thumbnailUrl: images.thumbnailUrl,

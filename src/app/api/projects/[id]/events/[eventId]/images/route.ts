@@ -3,6 +3,7 @@ import {
   selectImageForEvent,
   deselectImageForEvent,
   getSelectedImages,
+  updateEventImage,
 } from '@/lib/db/images'
 
 type RouteParams = { params: Promise<{ id: string; eventId: string }> }
@@ -54,6 +55,37 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     console.error('Failed to select image:', error)
     return NextResponse.json(
       { error: 'Failed to select image' },
+      { status: 500 }
+    )
+  }
+}
+
+// PATCH - Update image association (explanation, lock, order)
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
+  try {
+    const { eventId } = await params
+    const body = await request.json()
+
+    const { imageId, explanation, explanationLocked, orderIndex } = body
+
+    if (!imageId) {
+      return NextResponse.json(
+        { error: 'imageId is required' },
+        { status: 400 }
+      )
+    }
+
+    await updateEventImage(eventId, imageId, {
+      explanation,
+      explanationLocked,
+      orderIndex,
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Failed to update event image:', error)
+    return NextResponse.json(
+      { error: 'Failed to update event image' },
       { status: 500 }
     )
   }

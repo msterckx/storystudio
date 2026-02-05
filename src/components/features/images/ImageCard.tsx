@@ -8,9 +8,10 @@ interface ImageCardProps {
   isSelected: boolean
   onSelect: () => void
   onDismiss: () => void
+  onInspect?: () => void
 }
 
-export function ImageCard({ image, isSelected, onSelect, onDismiss }: ImageCardProps) {
+export function ImageCard({ image, isSelected, onSelect, onDismiss, onInspect }: ImageCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [imgError, setImgError] = useState(false)
 
@@ -23,7 +24,10 @@ export function ImageCard({ image, isSelected, onSelect, onDismiss }: ImageCardP
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Thumbnail */}
-      <div className="aspect-square bg-gray-100">
+      <div
+        className="aspect-square bg-gray-100 cursor-pointer"
+        onClick={onInspect}
+      >
         {imgError ? (
           <div className="w-full h-full flex items-center justify-center text-gray-400">
             <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

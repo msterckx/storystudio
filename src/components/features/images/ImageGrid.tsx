@@ -8,9 +8,10 @@ interface ImageGridProps {
   selectedIds: Set<string>
   onSelect: (image: SearchImage) => void
   onDismiss: (image: SearchImage) => void
+  onInspect?: (image: SearchImage) => void
 }
 
-export function ImageGrid({ images, selectedIds, onSelect, onDismiss }: ImageGridProps) {
+export function ImageGrid({ images, selectedIds, onSelect, onDismiss, onInspect }: ImageGridProps) {
   if (images.length === 0) {
     return (
       <div className="py-8 text-center">
@@ -40,6 +41,7 @@ export function ImageGrid({ images, selectedIds, onSelect, onDismiss }: ImageGri
           isSelected={selectedIds.has(image.id)}
           onSelect={() => onSelect(image)}
           onDismiss={() => onDismiss(image)}
+          onInspect={onInspect ? () => onInspect(image) : undefined}
         />
       ))}
     </div>

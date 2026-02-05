@@ -3,24 +3,27 @@
 import { useState, useCallback } from 'react'
 import { SearchImage } from './useImageSearch'
 
-export interface EventImageData extends SearchImage {
-  selected: boolean
-  dismissed: boolean
+export interface SelectedImageData extends SearchImage {
+  explanation: string
+  explanationLocked: boolean
+  orderIndex: number
 }
 
 interface UseEventImagesReturn {
-  selectedImages: SearchImage[]
+  selectedImages: SelectedImageData[]
   dismissedIds: Set<string>
   isLoading: boolean
   selectImage: (projectId: string, eventId: string, image: SearchImage) => Promise<void>
   deselectImage: (projectId: string, eventId: string, imageId: string) => Promise<void>
   dismissImage: (projectId: string, eventId: string, image: SearchImage) => Promise<void>
+  updateImageExplanation: (projectId: string, eventId: string, imageId: string, explanation: string) => Promise<void>
+  toggleExplanationLock: (projectId: string, eventId: string, imageId: string, locked: boolean) => Promise<void>
   loadSelectedImages: (projectId: string, eventId: string) => Promise<void>
-  loadDismissedIds: (projectId: string, eventId: string) => Promise<void>
+  setSelectedImages: React.Dispatch<React.SetStateAction<SelectedImageData[]>>
 }
 
 export function useEventImages(): UseEventImagesReturn {
-  const [selectedImages, setSelectedImages] = useState<SearchImage[]>([])
+  const [selectedImages, setSelectedImages] = useState<SelectedImageData[]>([])
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set())
   const [isLoading, setIsLoading] = useState(false)
 
@@ -31,7 +34,7 @@ export function useEventImages(): UseEventImagesReturn {
       if (!response.ok) throw new Error('Failed to load images')
       const data = await response.json()
       setSelectedImages(
-        data.images.map((img: Record<string, string>) => ({
+        data.images.map((img: Record<string, unknown>) => ({
           id: img.imageId,
           thumbnailUrl: img.thumbnailUrl,
           fullUrl: img.fullUrl,
@@ -41,6 +44,9 @@ export function useEventImages(): UseEventImagesReturn {
           title: img.title || '',
           creator: img.creator || '',
           date: img.date || '',
+          explanation: img.explanation || '',
+          explanationLocked: img.explanationLocked || false,
+          orderIndex: img.orderIndex || 0,
         }))
       )
     } catch (err) {
@@ -50,25 +56,16 @@ export function useEventImages(): UseEventImagesReturn {
     }
   }, [])
 
-  const loadDismissedIds = useCallback(async (projectId: string, eventId: string) => {
-    try {
-      const response = await fetch(`/api/projects/${projectId}/events/${eventId}/images`)
-      if (!response.ok) return
-      // We get all images - filter to dismissed
-      // Actually we need a separate endpoint or include dismissed in the main one
-      // For now, we'll store dismissed IDs locally and persist via dismiss API
-      // The dismissed IDs will be loaded when the event images are loaded
-    } catch {
-      // Silently fail
-    }
-    void projectId
-    void eventId
-  }, [])
-
   const selectImage = useCallback(
     async (projectId: string, eventId: string, image: SearchImage) => {
       // Optimistic update
-      setSelectedImages((prev) => [...prev, image])
+      const newSelected: SelectedImageData = {
+        ...image,
+        explanation: '',
+        explanationLocked: false,
+        orderIndex: selectedImages.length,
+      }
+      setSelectedImages((prev) => [...prev, newSelected])
 
       try {
         const response = await fetch(
@@ -89,7 +86,7 @@ export function useEventImages(): UseEventImagesReturn {
         setSelectedImages((prev) => prev.filter((i) => i.id !== image.id))
       }
     },
-    []
+    [selectedImages.length]
   )
 
   const deselectImage = useCallback(
@@ -109,7 +106,6 @@ export function useEventImages(): UseEventImagesReturn {
         }
       } catch (err) {
         console.error('Failed to deselect image:', err)
-        // Rollback
         if (removed) {
           setSelectedImages((prev) => [...prev, removed])
         }
@@ -138,12 +134,67 @@ export function useEventImages(): UseEventImagesReturn {
         }
       } catch (err) {
         console.error('Failed to dismiss image:', err)
-        // Rollback
         setDismissedIds((prev) => {
           const next = new Set(prev)
           next.delete(image.id)
           return next
         })
+      }
+    },
+    []
+  )
+
+  const updateImageExplanation = useCallback(
+    async (projectId: string, eventId: string, imageId: string, explanation: string) => {
+      // Optimistic update
+      setSelectedImages((prev) =>
+        prev.map((img) => (img.id === imageId ? { ...img, explanation } : img))
+      )
+
+      try {
+        const response = await fetch(
+          `/api/projects/${projectId}/events/${eventId}/images`,
+          {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageId, explanation }),
+          }
+        )
+
+        if (!response.ok) {
+          throw new Error('Failed to update explanation')
+        }
+      } catch (err) {
+        console.error('Failed to update explanation:', err)
+      }
+    },
+    []
+  )
+
+  const toggleExplanationLock = useCallback(
+    async (projectId: string, eventId: string, imageId: string, locked: boolean) => {
+      // Optimistic update
+      setSelectedImages((prev) =>
+        prev.map((img) =>
+          img.id === imageId ? { ...img, explanationLocked: locked } : img
+        )
+      )
+
+      try {
+        const response = await fetch(
+          `/api/projects/${projectId}/events/${eventId}/images`,
+          {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageId, explanationLocked: locked }),
+          }
+        )
+
+        if (!response.ok) {
+          throw new Error('Failed to toggle lock')
+        }
+      } catch (err) {
+        console.error('Failed to toggle lock:', err)
       }
     },
     []
@@ -156,7 +207,9 @@ export function useEventImages(): UseEventImagesReturn {
     selectImage,
     deselectImage,
     dismissImage,
+    updateImageExplanation,
+    toggleExplanationLock,
     loadSelectedImages,
-    loadDismissedIds,
+    setSelectedImages,
   }
 }

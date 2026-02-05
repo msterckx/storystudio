@@ -1,5 +1,7 @@
 # Phase 8: Image Inspector & Explanations
 
+**Status: Complete**
+
 ## Goal
 Build the full-screen image inspector for detailed examination and add AI-generated explanations for selected images.
 
@@ -8,51 +10,51 @@ Build the full-screen image inspector for detailed examination and add AI-genera
 ## Deliverables
 
 ### 8.1 Image Inspector Modal
-- [ ] Full-screen modal overlay
-- [ ] Large image display area
-- [ ] Metadata sidebar
-- [ ] Actions: Select, Dismiss, Close
+- [x] Full-screen modal overlay
+- [x] Large image display area
+- [x] Metadata sidebar
+- [x] Actions: Select, Dismiss, Close
 
 ### 8.2 Zoom and Pan
-- [ ] Zoom controls (+/- buttons)
-- [ ] Zoom with scroll wheel
-- [ ] Pan by clicking and dragging
-- [ ] Reset to fit view button
-- [ ] Zoom range: 50% - 400%
+- [x] Zoom controls (+/- buttons)
+- [x] Zoom with scroll wheel
+- [x] Pan by clicking and dragging
+- [x] Reset to fit view button
+- [x] Zoom range: 50% - 400%
 
 ### 8.3 Metadata Display
-- [ ] Full metadata panel:
+- [x] Full metadata panel:
   - Title
   - Creator/Artist
   - Date/Period
   - Medium/Type
   - Source
   - License (with explanation)
-- [ ] Link to original source
+- [x] Link to original source
 
 ### 8.4 Image Explanations
-- [ ] AI-generated explanation for each selected image
-- [ ] Explanation describes:
+- [x] AI-generated explanation for each selected image
+- [x] Explanation describes:
   - What the image shows
   - Why it's relevant to the event
-- [ ] Explanation stored with image-event association
+- [x] Explanation stored with image-event association
 
 ### 8.5 Explanation Editing
-- [ ] Editable explanation textarea
-- [ ] Auto-save explanation changes
-- [ ] Lock toggle to prevent AI regeneration
+- [x] Editable explanation textarea
+- [x] Auto-save explanation changes
+- [x] Lock toggle to prevent AI regeneration
 
 ### 8.6 Regenerate Explanation
-- [ ] "Regenerate" button for explanation
-- [ ] Respects lock state
-- [ ] API call to generate new explanation
+- [x] "Regenerate" button for explanation
+- [x] Respects lock state
+- [x] API call to generate new explanation
 
 ### 8.7 Selected Images Panel
-- [ ] Enhanced view of selected images
-- [ ] Click to open inspector
-- [ ] Drag to reorder
-- [ ] Remove button
-- [ ] Show explanation preview
+- [x] Enhanced view of selected images
+- [x] Click to open inspector
+- [x] Drag to reorder
+- [x] Remove button
+- [x] Show explanation preview
 
 ---
 
@@ -168,25 +170,25 @@ Guidelines:
 
 After this phase, verify:
 
-- [ ] Can click image in grid to open inspector
-- [ ] Inspector shows large image
-- [ ] Can zoom in with + button
-- [ ] Can zoom out with - button
-- [ ] Can zoom with scroll wheel
-- [ ] Can pan image when zoomed
-- [ ] Reset button restores default view
-- [ ] Metadata panel shows all available info
-- [ ] Can click source link to open original
-- [ ] Selecting image generates explanation
-- [ ] Explanation appears in selected images section
-- [ ] Can edit explanation text
-- [ ] Edited explanation saves automatically
-- [ ] Can lock explanation
-- [ ] Locked explanations don't regenerate
-- [ ] Can regenerate unlocked explanations
-- [ ] Can reorder selected images by dragging
-- [ ] Can remove image from selected
-- [ ] Inspector closes with X or Escape
+- [x] Can click image in grid to open inspector
+- [x] Inspector shows large image
+- [x] Can zoom in with + button
+- [x] Can zoom out with - button
+- [x] Can zoom with scroll wheel
+- [x] Can pan image when zoomed
+- [x] Reset button restores default view
+- [x] Metadata panel shows all available info
+- [x] Can click source link to open original
+- [x] Selecting image generates explanation
+- [x] Explanation appears in selected images section
+- [x] Can edit explanation text
+- [x] Edited explanation saves automatically
+- [x] Can lock explanation
+- [x] Locked explanations don't regenerate
+- [x] Can regenerate unlocked explanations
+- [x] Can reorder selected images by dragging
+- [x] Can remove image from selected
+- [x] Inspector closes with X or Escape
 
 ---
 
