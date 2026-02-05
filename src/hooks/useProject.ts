@@ -31,6 +31,7 @@ interface UseProjectReturn {
   error: string | null
   saveStatus: ReturnType<typeof useSaveStatus>['status']
   updateTitle: (title: string) => void
+  updateSettings: (settings: Record<string, unknown>) => void
 }
 
 export function useProject(projectId: string): UseProjectReturn {
@@ -95,6 +96,29 @@ export function useProject(projectId: string): UseProjectReturn {
     [project, projectId, save]
   )
 
+  const updateSettings = useCallback(
+    (settings: Record<string, unknown>) => {
+      if (!project) return
+
+      const settingsStr = JSON.stringify(settings)
+      // Optimistic update
+      setProject((prev) => (prev ? { ...prev, settings: settingsStr } : null))
+
+      save(async () => {
+        const response = await fetch(`/api/projects/${projectId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ settings }),
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to save settings')
+        }
+      })
+    },
+    [project, projectId, save]
+  )
+
   return {
     project,
     events,
@@ -102,5 +126,6 @@ export function useProject(projectId: string): UseProjectReturn {
     error,
     saveStatus,
     updateTitle,
+    updateSettings,
   }
 }

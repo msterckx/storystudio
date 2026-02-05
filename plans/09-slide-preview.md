@@ -1,5 +1,7 @@
 # Phase 9: Slide Preview
 
+**Status: Complete**
+
 ## Goal
 Build the live slide preview in the right pane that shows how the current event will appear in the final presentation.
 
@@ -8,44 +10,44 @@ Build the live slide preview in the right pane that shows how the current event 
 ## Deliverables
 
 ### 9.1 Preview Tab
-- [ ] Preview tab in right pane
-- [ ] Shows slide preview for selected event
-- [ ] Updates in real-time as content changes
+- [x] Preview tab in right pane
+- [x] Shows slide preview for selected event
+- [x] Updates in real-time as content changes
 
 ### 9.2 Slide Preview Component
-- [ ] `SlidePreview` component
-- [ ] Renders event as presentation slide:
+- [x] `SlidePreview` component
+- [x] Renders event as presentation slide:
   - Event title as slide title
   - Content formatted for slide
   - Selected images displayed
   - Image captions shown
-- [ ] Maintains aspect ratio (16:9)
+- [x] Maintains aspect ratio (16:9)
 
 ### 9.3 Theme Selection
-- [ ] Theme dropdown in preview panel
-- [ ] Available themes:
+- [x] Theme dropdown in preview panel
+- [x] Available themes:
   - Academic (clean, professional)
   - Modern (bold, contemporary)
   - Historic (classic, archival)
   - Minimal (whitespace, simple)
-- [ ] Theme persists per project
+- [x] Theme persists per project
 
 ### 9.4 Real-Time Updates
-- [ ] Preview updates within 500ms of content change
-- [ ] Debounced to prevent excessive re-renders
-- [ ] Smooth transition between states
+- [x] Preview updates within 500ms of content change
+- [x] Debounced to prevent excessive re-renders
+- [x] Smooth transition between states
 
 ### 9.5 Multiple Slide Layouts
-- [ ] Text-only layout (no images)
-- [ ] Text + single image
-- [ ] Text + multiple images
-- [ ] Image-focused layout
+- [x] Text-only layout (no images)
+- [x] Text + single image
+- [x] Text + multiple images
+- [x] Image-focused layout
 
 ### 9.6 Full Preview Mode
-- [ ] "Full Preview" button
-- [ ] Opens modal with larger slide view
-- [ ] Navigate between events/slides
-- [ ] Keyboard navigation (← →)
+- [x] "Full Preview" button
+- [x] Opens modal with larger slide view
+- [x] Navigate between events/slides
+- [x] Keyboard navigation (← →)
 
 ---
 
@@ -195,23 +197,23 @@ export function useSlidePreview(event: Event, images: Image[]) {
 
 After this phase, verify:
 
-- [ ] Preview tab shows in right pane
-- [ ] Clicking Preview tab shows slide preview
-- [ ] Preview shows event title
-- [ ] Preview shows event content (formatted)
-- [ ] Preview shows selected images
-- [ ] Preview shows image captions
-- [ ] Preview maintains 16:9 aspect ratio
-- [ ] Theme dropdown shows available themes
-- [ ] Changing theme updates preview immediately
-- [ ] Theme selection persists after refresh
-- [ ] Editing content updates preview in real-time
-- [ ] Adding/removing images updates preview
-- [ ] Different content lengths show different layouts
-- [ ] Full Preview button opens modal
-- [ ] Can navigate slides in full preview
-- [ ] Arrow keys work in full preview
-- [ ] Escape closes full preview
+- [x] Preview tab shows in right pane
+- [x] Clicking Preview tab shows slide preview
+- [x] Preview shows event title
+- [x] Preview shows event content (formatted)
+- [x] Preview shows selected images
+- [x] Preview shows image captions
+- [x] Preview maintains 16:9 aspect ratio
+- [x] Theme dropdown shows available themes
+- [x] Changing theme updates preview immediately
+- [x] Theme selection persists after refresh
+- [x] Editing content updates preview in real-time
+- [x] Adding/removing images updates preview
+- [x] Different content lengths show different layouts
+- [x] Full Preview button opens modal
+- [x] Can navigate slides in full preview
+- [x] Arrow keys work in full preview
+- [x] Escape closes full preview
 
 ---
 

@@ -18,7 +18,7 @@ interface PageProps {
 }
 
 function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
-  const { project, events: initialEvents, isLoading, error, saveStatus: projectSaveStatus, updateTitle } =
+  const { project, events: initialEvents, isLoading, error, saveStatus: projectSaveStatus, updateTitle, updateSettings } =
     useProject(projectId)
   const { selectedEventId, selectEvent } = useSelectedEvent()
   const {
@@ -140,6 +140,9 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
       eventId={selectedEventId}
       eventTitle={selectedEvent?.title || ''}
       eventContent={selectedEvent?.content || ''}
+      events={events.map((e) => ({ id: e.id, title: e.title, content: e.content }))}
+      projectSettings={project.settings}
+      onSettingsChange={updateSettings}
     />
   )
 
