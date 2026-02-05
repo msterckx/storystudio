@@ -1,5 +1,7 @@
 # Phase 7: Image Discovery
 
+**Status: Complete**
+
 ## Goal
 Build the image discovery system in the right pane. Users can find, select, and dismiss images from cultural heritage sources.
 
@@ -8,40 +10,40 @@ Build the image discovery system in the right pane. Users can find, select, and 
 ## Deliverables
 
 ### 7.1 Right Pane Tabs
-- [ ] Tab navigation: [Images] | [Preview]
-- [ ] Images tab active by default
-- [ ] Tab state persists during session
+- [x] Tab navigation: [Images] | [Preview]
+- [x] Images tab active by default
+- [x] Tab state persists during session
 
 ### 7.2 Image Search Integration
-- [ ] Wikimedia Commons API integration
-- [ ] Search triggered when event selected
-- [ ] Extract search terms from event title/content
-- [ ] Return 8-12 candidate images
+- [x] Wikimedia Commons API integration
+- [x] Search triggered when event selected
+- [x] Extract search terms from event title/content
+- [x] Return 8-12 candidate images
 
 ### 7.3 Image Grid Display
-- [ ] `ImageGrid` component showing candidates
-- [ ] `ImageCard` component with:
+- [x] `ImageGrid` component showing candidates
+- [x] `ImageCard` component with:
   - Thumbnail image
   - Source badge (e.g., "Wikimedia")
   - Select/Dismiss buttons on hover
-- [ ] Loading skeleton while fetching
-- [ ] Empty state when no images found
+- [x] Loading skeleton while fetching
+- [x] Empty state when no images found
 
 ### 7.4 Image Selection
-- [ ] Click to select image for event
-- [ ] Selected images shown in separate section above grid
-- [ ] Multiple images can be selected
-- [ ] Selection persisted to database
-- [ ] API route: `POST /api/projects/[id]/events/[eventId]/images`
+- [x] Click to select image for event
+- [x] Selected images shown in separate section above grid
+- [x] Multiple images can be selected
+- [x] Selection persisted to database
+- [x] API route: `POST /api/projects/[id]/events/[eventId]/images`
 
 ### 7.5 Image Dismissal
-- [ ] Dismiss button removes image from candidates
-- [ ] Dismissed images don't reappear for this event
-- [ ] Dismissal persisted to database
-- [ ] "Show dismissed" toggle (optional)
+- [x] Dismiss button removes image from candidates
+- [x] Dismissed images don't reappear for this event
+- [x] Dismissal persisted to database
+- [x] "Show dismissed" toggle (optional)
 
 ### 7.6 Image Metadata Display
-- [ ] Basic metadata on card hover:
+- [x] Basic metadata on card hover:
   - Source
   - License type
   - Date (if available)
@@ -197,22 +199,22 @@ export function extractSearchTerms(event: Event): string {
 
 After this phase, verify:
 
-- [ ] Right pane shows Images and Preview tabs
-- [ ] Images tab is active by default
-- [ ] Selecting an event triggers image search
-- [ ] Loading skeletons show while searching
-- [ ] Image grid displays candidate images
-- [ ] Each image shows source badge
-- [ ] Hovering shows Select/Dismiss buttons
-- [ ] Can select an image
-- [ ] Selected images appear in top section
-- [ ] Can select multiple images
-- [ ] Can dismiss an image
-- [ ] Dismissed images disappear from grid
-- [ ] Dismissed images don't reappear on refresh
-- [ ] Selected images persist after page refresh
-- [ ] Empty state shows when no images found
-- [ ] Different events show different images
+- [x] Right pane shows Images and Preview tabs
+- [x] Images tab is active by default
+- [x] Selecting an event triggers image search
+- [x] Loading skeletons show while searching
+- [x] Image grid displays candidate images
+- [x] Each image shows source badge
+- [x] Hovering shows Select/Dismiss buttons
+- [x] Can select an image
+- [x] Selected images appear in top section
+- [x] Can select multiple images
+- [x] Can dismiss an image
+- [x] Dismissed images disappear from grid
+- [x] Dismissed images don't reappear on refresh
+- [x] Selected images persist after page refresh
+- [x] Empty state shows when no images found
+- [x] Different events show different images
 
 ---
 

@@ -40,6 +40,33 @@ sqlite.exec(`
 
   CREATE INDEX IF NOT EXISTS idx_events_project_id ON events(project_id);
   CREATE INDEX IF NOT EXISTS idx_events_order ON events(project_id, order_index);
+
+  CREATE TABLE IF NOT EXISTS images (
+    id TEXT PRIMARY KEY,
+    source_url TEXT NOT NULL,
+    thumbnail_url TEXT NOT NULL,
+    full_url TEXT NOT NULL,
+    source TEXT NOT NULL,
+    license TEXT NOT NULL DEFAULT '',
+    title TEXT DEFAULT '',
+    creator TEXT DEFAULT '',
+    date TEXT DEFAULT '',
+    medium TEXT DEFAULT '',
+    created_at INTEGER NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS event_images (
+    event_id TEXT NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+    image_id TEXT NOT NULL REFERENCES images(id) ON DELETE CASCADE,
+    explanation TEXT DEFAULT '',
+    explanation_locked INTEGER NOT NULL DEFAULT 0,
+    selected INTEGER NOT NULL DEFAULT 0,
+    dismissed INTEGER NOT NULL DEFAULT 0,
+    order_index INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (event_id, image_id)
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_event_images_event ON event_images(event_id);
 `)
 
 export { schema }

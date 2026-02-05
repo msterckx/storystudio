@@ -6,6 +6,7 @@ import { TopBar } from '@/components/layout/TopBar'
 import { ThreePaneLayout } from '@/components/layout/ThreePaneLayout'
 import { EventList } from '@/components/features/events/EventList'
 import { EventEditor } from '@/components/features/editor/EventEditor'
+import { ImagePanel } from '@/components/features/images/ImagePanel'
 import { useProject } from '@/hooks/useProject'
 import { useEvents, Event } from '@/hooks/useEvents'
 import { useSelectedEvent } from '@/hooks/useSelectedEvent'
@@ -134,23 +135,12 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
   )
 
   const rightPane = (
-    <div className="h-full flex flex-col">
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex gap-2">
-          <button className="flex-1 px-3 py-1.5 text-sm bg-blue-50 text-blue-700 rounded-md">
-            Images
-          </button>
-          <button className="flex-1 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded-md">
-            Preview
-          </button>
-        </div>
-      </div>
-      <div className="flex-1 overflow-auto p-4">
-        <p className="text-sm text-gray-500">
-          Image discovery will appear here in Phase 7.
-        </p>
-      </div>
-    </div>
+    <ImagePanel
+      projectId={projectId}
+      eventId={selectedEventId}
+      eventTitle={selectedEvent?.title || ''}
+      eventContent={selectedEvent?.content || ''}
+    />
   )
 
   return (
