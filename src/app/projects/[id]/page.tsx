@@ -41,6 +41,7 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
   const { isOpen: commandBarOpen, open: openCommandBar, close: closeCommandBar } = useCommandBar()
   useKeyboardShortcuts({ events, selectedEventId, onSelectEvent: selectEvent })
   const [exportOpen, setExportOpen] = useState(false)
+  const [imageSearchQuery, setImageSearchQuery] = useState<string | null>(null)
   const [editorSaveStatus, setEditorSaveStatus] = useState<SaveStatus>('idle')
   const hasInitializedEvents = useRef(false)
 
@@ -222,6 +223,12 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
           }
           return true
         }
+        case 'search_images': {
+          const event = events.find((e) => e.id === action.eventId)
+          setImageSearchQuery(action.query || event?.title || null)
+          selectEvent(action.eventId)
+          return true
+        }
         case 'update_settings': {
           updateSettings(action.settings)
           return true
@@ -293,6 +300,8 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
       events={events.map((e) => ({ id: e.id, title: e.title, content: e.content }))}
       projectSettings={project.settings}
       onSettingsChange={updateSettings}
+      customSearchQuery={imageSearchQuery}
+      onSearchQueryUsed={() => setImageSearchQuery(null)}
     />
   )
 

@@ -12,6 +12,7 @@ Available action types:
 - expand_all: Expand all events with more detail. No additional fields needed.
 - rewrite_event: Rewrite a single event in a different style. Requires eventId and style (e.g. "simpler", "academic", "engaging", "shorter").
 - rewrite_all: Rewrite all events in a different style. Requires style.
+- search_images: Search for images for an event. Requires eventId. Optional query (user-specified search terms). Use when the user asks to "find images", "search for images", "look for pictures/photos", or requests more/different images. If the user provides specific terms (e.g. "find images of Roman aqueducts"), include them in query. If they just say "find more images", omit query to use auto-generated terms.
 - update_settings: Change project settings. Requires settings object with keys like "audience", "tone".
 
 Important rules:

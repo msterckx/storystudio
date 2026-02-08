@@ -25,6 +25,7 @@ const SUGGESTIONS = [
   'Expand this event',
   'Add a new event',
   'Rewrite for high school audience',
+  'Find more images for this event',
   'Remove the last event',
 ]
 

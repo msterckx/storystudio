@@ -7,6 +7,7 @@ export type CommandAction =
   | { type: 'expand_all' }
   | { type: 'rewrite_event'; eventId: string; style: string }
   | { type: 'rewrite_all'; style: string }
+  | { type: 'search_images'; eventId: string; query?: string }
   | { type: 'update_settings'; settings: Record<string, unknown> }
 
 export interface ParsedCommand {
@@ -45,6 +46,10 @@ export function describeAction(action: CommandAction, eventTitles: Map<string, s
       return `Rewrite "${eventTitles.get(action.eventId) || 'Unknown'}" in ${action.style} style`
     case 'rewrite_all':
       return `Rewrite all events in ${action.style} style`
+    case 'search_images':
+      return action.query
+        ? `Search for images: "${action.query}"`
+        : `Search for more images for "${eventTitles.get(action.eventId) || 'Unknown'}"`
     case 'update_settings':
       return `Update project settings`
     default:

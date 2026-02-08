@@ -28,6 +28,8 @@ interface ImagePanelProps {
   events?: SlideEvent[]
   projectSettings?: string
   onSettingsChange?: (settings: Record<string, unknown>) => void
+  customSearchQuery?: string | null
+  onSearchQueryUsed?: () => void
 }
 
 export function ImagePanel({
@@ -38,6 +40,8 @@ export function ImagePanel({
   events = [],
   projectSettings = '{}',
   onSettingsChange,
+  customSearchQuery,
+  onSearchQueryUsed,
 }: ImagePanelProps) {
   const { images, isLoading: searchLoading, search } = useImageSearch()
   const {
@@ -105,6 +109,16 @@ export function ImagePanel({
       search(terms)
     }
   }, [eventId, eventTitle, eventContent, search])
+
+  // Handle custom search query from command bar
+  useEffect(() => {
+    if (customSearchQuery && eventId) {
+      lastSearchRef.current = customSearchQuery
+      search(customSearchQuery)
+      setActiveTab('images')
+      onSearchQueryUsed?.()
+    }
+  }, [customSearchQuery, eventId, search, onSearchQueryUsed])
 
   const handleSelect = useCallback(
     (image: SearchImage) => {
