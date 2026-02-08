@@ -54,7 +54,7 @@ export function ImageCard({ image, isSelected, onSelect, onDismiss, onInspect }:
 
       {/* Hover overlay with actions */}
       {isHovered && (
-        <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-2">
+        <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-2 cursor-pointer" onClick={onInspect}>
           {/* Title */}
           {image.title && (
             <p className="text-xs text-white mb-2 line-clamp-2">{image.title}</p>
@@ -64,14 +64,14 @@ export function ImageCard({ image, isSelected, onSelect, onDismiss, onInspect }:
           <div className="flex gap-1">
             {!isSelected && (
               <button
-                onClick={onSelect}
+                onClick={(e) => { e.stopPropagation(); onSelect() }}
                 className="flex-1 px-2 py-1 text-xs font-medium bg-blue-600 text-white rounded hover:bg-blue-700"
               >
                 Select
               </button>
             )}
             <button
-              onClick={onDismiss}
+              onClick={(e) => { e.stopPropagation(); onDismiss() }}
               className="flex-1 px-2 py-1 text-xs font-medium bg-gray-600 text-white rounded hover:bg-gray-700"
             >
               Dismiss
