@@ -8,9 +8,15 @@ interface ModalProps {
   onClose: () => void
   children: ReactNode
   title?: string
+  size?: 'md' | 'lg'
 }
 
-export function Modal({ isOpen, onClose, children, title }: ModalProps) {
+const sizeClasses = {
+  md: 'max-w-md',
+  lg: 'max-w-4xl',
+}
+
+export function Modal({ isOpen, onClose, children, title, size = 'md' }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -41,7 +47,7 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
       onClick={handleOverlayClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
     >
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-in fade-in zoom-in-95 duration-200">
+      <div className={`bg-white rounded-lg shadow-xl ${sizeClasses[size]} w-full mx-4 animate-in fade-in zoom-in-95 duration-200`}>
         {title && (
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900">{title}</h2>

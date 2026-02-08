@@ -12,6 +12,7 @@ import { useEvents, Event } from '@/hooks/useEvents'
 import { useSelectedEvent } from '@/hooks/useSelectedEvent'
 import { useCommandBar } from '@/hooks/useCommandBar'
 import { CommandBar } from '@/components/features/command-bar/CommandBar'
+import { ExportModal } from '@/components/features/export/ExportModal'
 import { CommandAction } from '@/lib/commands/actions'
 import { SaveStatus } from '@/types'
 import Link from 'next/link'
@@ -36,6 +37,7 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
   } = useEvents(projectId, initialEvents as Event[])
 
   const { isOpen: commandBarOpen, open: openCommandBar, close: closeCommandBar } = useCommandBar()
+  const [exportOpen, setExportOpen] = useState(false)
   const [editorSaveStatus, setEditorSaveStatus] = useState<SaveStatus>('idle')
   const hasInitializedEvents = useRef(false)
 
@@ -298,6 +300,7 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
         onTitleChange={updateTitle}
         saveStatus={combinedSaveStatus}
         showExport
+        onExportClick={() => setExportOpen(true)}
         showCommandBar
         onCommandBarClick={openCommandBar}
       />
@@ -321,6 +324,22 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
         }))}
         selectedEventId={selectedEventId}
         onExecute={handleCommandExecute}
+      />
+
+      <ExportModal
+        isOpen={exportOpen}
+        onClose={() => setExportOpen(false)}
+        projectId={projectId}
+        projectTitle={project.title}
+        events={events.map((e) => ({ id: e.id, title: e.title, content: e.content }))}
+        themeId={(() => {
+          try {
+            const s = JSON.parse(project.settings || '{}')
+            return s.themeId || 'academic'
+          } catch {
+            return 'academic'
+          }
+        })()}
       />
     </ApplicationShell>
   )

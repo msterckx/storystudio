@@ -10,6 +10,7 @@ interface TopBarProps {
   onTitleChange?: (title: string) => void
   saveStatus?: SaveStatus
   showExport?: boolean
+  onExportClick?: () => void
   showCommandBar?: boolean
   onCommandBarClick?: () => void
 }
@@ -19,6 +20,7 @@ export function TopBar({
   onTitleChange,
   saveStatus = 'idle',
   showExport = false,
+  onExportClick,
   showCommandBar = false,
   onCommandBarClick,
 }: TopBarProps) {
@@ -80,7 +82,7 @@ export function TopBar({
 
       {/* Export Button */}
       {showExport && (
-        <Button variant="primary" size="sm">
+        <Button variant="primary" size="sm" onClick={onExportClick}>
           Export
         </Button>
       )}
