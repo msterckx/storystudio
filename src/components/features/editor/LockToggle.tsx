@@ -10,6 +10,7 @@ export function LockToggle({ isLocked, onToggle }: LockToggleProps) {
     <button
       type="button"
       onClick={onToggle}
+      aria-pressed={isLocked}
       className={`
         flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium
         transition-colors

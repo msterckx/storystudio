@@ -1,6 +1,7 @@
 import { ApplicationShell } from '@/components/layout/ApplicationShell'
 import { TopBar } from '@/components/layout/TopBar'
 import { ProjectList } from '@/components/features/projects/ProjectList'
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 import { getAllProjects } from '@/lib/db/projects'
 
 export const dynamic = 'force-dynamic'
@@ -21,9 +22,11 @@ export default async function ProjectsPage() {
       <TopBar />
 
       <main className="flex-1 overflow-auto p-8">
-        <div className="max-w-4xl mx-auto">
-          <ProjectList initialProjects={serializedProjects} />
-        </div>
+        <ErrorBoundary>
+          <div className="max-w-4xl mx-auto">
+            <ProjectList initialProjects={serializedProjects} />
+          </div>
+        </ErrorBoundary>
       </main>
     </ApplicationShell>
   )

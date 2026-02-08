@@ -22,6 +22,7 @@ function ToolbarButton({ onClick, isActive, disabled, title, children }: Toolbar
       onClick={onClick}
       disabled={disabled}
       title={title}
+      aria-pressed={isActive}
       className={`
         p-2 rounded-md transition-colors
         ${isActive ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'}

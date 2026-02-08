@@ -11,8 +11,10 @@ import { useProject } from '@/hooks/useProject'
 import { useEvents, Event } from '@/hooks/useEvents'
 import { useSelectedEvent } from '@/hooks/useSelectedEvent'
 import { useCommandBar } from '@/hooks/useCommandBar'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { CommandBar } from '@/components/features/command-bar/CommandBar'
 import { ExportModal } from '@/components/features/export/ExportModal'
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 import { CommandAction } from '@/lib/commands/actions'
 import { SaveStatus } from '@/types'
 import Link from 'next/link'
@@ -37,6 +39,7 @@ function ProjectWorkspaceContent({ projectId }: { projectId: string }) {
   } = useEvents(projectId, initialEvents as Event[])
 
   const { isOpen: commandBarOpen, open: openCommandBar, close: closeCommandBar } = useCommandBar()
+  useKeyboardShortcuts({ events, selectedEventId, onSelectEvent: selectEvent })
   const [exportOpen, setExportOpen] = useState(false)
   const [editorSaveStatus, setEditorSaveStatus] = useState<SaveStatus>('idle')
   const hasInitializedEvents = useRef(false)
@@ -349,17 +352,19 @@ export default function ProjectWorkspacePage({ params }: PageProps) {
   const { id } = use(params)
 
   return (
-    <Suspense
-      fallback={
-        <ApplicationShell>
-          <TopBar />
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-gray-500">Loading...</div>
-          </div>
-        </ApplicationShell>
-      }
-    >
-      <ProjectWorkspaceContent projectId={id} />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense
+        fallback={
+          <ApplicationShell>
+            <TopBar />
+            <div className="flex-1 flex items-center justify-center">
+              <div className="text-gray-500">Loading...</div>
+            </div>
+          </ApplicationShell>
+        }
+      >
+        <ProjectWorkspaceContent projectId={id} />
+      </Suspense>
+    </ErrorBoundary>
   )
 }

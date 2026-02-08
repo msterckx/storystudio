@@ -8,7 +8,7 @@ interface SaveIndicatorProps {
 
 export function SaveIndicator({ status }: SaveIndicatorProps) {
   const statusConfig = {
-    idle: { text: '', className: 'text-gray-400' },
+    idle: { text: '', className: '' },
     saving: { text: 'Saving...', className: 'text-gray-500' },
     saved: { text: 'Saved', className: 'text-green-600' },
     error: { text: 'Save failed', className: 'text-red-600' },
@@ -16,10 +16,12 @@ export function SaveIndicator({ status }: SaveIndicatorProps) {
 
   const config = statusConfig[status]
 
-  if (status === 'idle') return null
-
   return (
-    <div className={`flex items-center gap-1.5 text-sm ${config.className}`}>
+    <div
+      className={`flex items-center gap-1.5 text-sm ${config.className}`}
+      aria-live="polite"
+      aria-atomic="true"
+    >
       {status === 'saving' && (
         <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
           <circle
@@ -56,7 +58,7 @@ export function SaveIndicator({ status }: SaveIndicatorProps) {
           />
         </svg>
       )}
-      <span>{config.text}</span>
+      {status !== 'idle' && <span>{config.text}</span>}
     </div>
   )
 }

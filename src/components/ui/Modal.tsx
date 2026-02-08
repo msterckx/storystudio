@@ -18,6 +18,7 @@ const sizeClasses = {
 
 export function Modal({ isOpen, onClose, children, title, size = 'md' }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -27,6 +28,20 @@ export function Modal({ isOpen, onClose, children, title, size = 'md' }: ModalPr
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
       document.body.style.overflow = 'hidden'
+
+      // Auto-focus first focusable element
+      const timer = setTimeout(() => {
+        const focusable = contentRef.current?.querySelector<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        focusable?.focus()
+      }, 50)
+
+      return () => {
+        clearTimeout(timer)
+        document.removeEventListener('keydown', handleEscape)
+        document.body.style.overflow = ''
+      }
     }
 
     return () => {
@@ -46,11 +61,17 @@ export function Modal({ isOpen, onClose, children, title, size = 'md' }: ModalPr
       ref={overlayRef}
       onClick={handleOverlayClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={title ? 'modal-title' : undefined}
     >
-      <div className={`bg-white rounded-lg shadow-xl ${sizeClasses[size]} w-full mx-4 animate-in fade-in zoom-in-95 duration-200`}>
+      <div
+        ref={contentRef}
+        className={`bg-white rounded-lg shadow-xl ${sizeClasses[size]} w-full mx-4 animate-in fade-in zoom-in-95 duration-200`}
+      >
         {title && (
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+            <h2 id="modal-title" className="text-lg font-semibold text-gray-900">{title}</h2>
           </div>
         )}
         <div className="p-6">{children}</div>

@@ -79,10 +79,22 @@ function EventEditorInner({
     await onEventUpdate(event.id, changes)
   }, [event.id, onEventUpdate])
 
-  const { status, triggerSave } = useAutoSave({
+  const { status, triggerSave, forceSave } = useAutoSave({
     delay: 1500,
     onSave: saveEvent,
   })
+
+  // Cmd/Ctrl+S to force save
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+        e.preventDefault()
+        forceSave()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [forceSave])
 
   // Report save status to parent
   useEffect(() => {

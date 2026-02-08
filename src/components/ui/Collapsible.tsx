@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, ReactNode } from 'react'
+import { useState, useId, ReactNode } from 'react'
 
 interface CollapsibleProps {
   title: string
@@ -10,12 +10,15 @@ interface CollapsibleProps {
 
 export function Collapsible({ title, defaultOpen = false, children }: CollapsibleProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
+  const contentId = useId()
 
   return (
     <div className="border border-gray-200 rounded-lg">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls={contentId}
         className="w-full flex items-center justify-between px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
       >
         <span>{title}</span>
@@ -31,7 +34,7 @@ export function Collapsible({ title, defaultOpen = false, children }: Collapsibl
           />
         </svg>
       </button>
-      {isOpen && <div className="px-4 pb-4">{children}</div>}
+      {isOpen && <div id={contentId} className="px-4 pb-4">{children}</div>}
     </div>
   )
 }

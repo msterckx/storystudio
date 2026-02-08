@@ -106,6 +106,28 @@ export function EventList({
     }
   }
 
+  // Loading skeleton
+  if (isLoading && events.length === 0) {
+    return (
+      <div className="h-full flex flex-col">
+        <div className="p-4 border-b border-gray-200">
+          <h2 className="font-semibold text-gray-900">Events</h2>
+        </div>
+        <div className="flex-1 p-4 space-y-2">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="animate-pulse flex items-center gap-3 p-3 rounded-lg bg-gray-50">
+              <div className="w-6 h-6 bg-gray-200 rounded" />
+              <div className="flex-1 space-y-1.5">
+                <div className="h-3.5 bg-gray-200 rounded w-3/4" />
+                <div className="h-2.5 bg-gray-100 rounded w-1/2" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   if (events.length === 0) {
     return (
       <div className="h-full flex flex-col">

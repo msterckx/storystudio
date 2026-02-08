@@ -63,6 +63,7 @@ export const EventListItem = forwardRef<HTMLDivElement, EventListItemProps>(
         {/* Drag Handle */}
         <button
           className="flex-shrink-0 p-1 -ml-1 text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity"
+          aria-label="Drag to reorder"
           {...attributes}
           {...listeners}
         >
@@ -93,6 +94,7 @@ export const EventListItem = forwardRef<HTMLDivElement, EventListItemProps>(
           className="flex-shrink-0 p-1 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={handleDelete}
           title="Delete event"
+          aria-label={`Delete ${title}`}
         >
           <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
             <path

@@ -10,6 +10,7 @@ export function AddEventButton({ onClick, disabled }: AddEventButtonProps) {
     <button
       onClick={onClick}
       disabled={disabled}
+      aria-label="Add new event"
       className="
         w-full p-2 mt-2 text-sm text-gray-500
         border border-dashed border-gray-300 rounded-lg

@@ -11,6 +11,7 @@ interface UseAutoSaveOptions {
 interface UseAutoSaveReturn {
   status: SaveStatus
   triggerSave: () => void
+  forceSave: () => void
 }
 
 export function useAutoSave({ delay = 2000, onSave }: UseAutoSaveOptions): UseAutoSaveReturn {
@@ -48,6 +49,15 @@ export function useAutoSave({ delay = 2000, onSave }: UseAutoSaveOptions): UseAu
     timeoutRef.current = setTimeout(executeSave, delay)
   }, [delay, executeSave])
 
+  const forceSave = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    pendingRef.current = true
+    executeSave()
+  }, [executeSave])
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -57,5 +67,5 @@ export function useAutoSave({ delay = 2000, onSave }: UseAutoSaveOptions): UseAu
     }
   }, [])
 
-  return { status, triggerSave }
+  return { status, triggerSave, forceSave }
 }
