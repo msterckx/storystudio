@@ -11,7 +11,10 @@ export interface SearchImage {
   license: string
   title: string
   creator: string
+  description: string
   date: string
+  relevanceScore?: number
+  relevanceReason?: string
 }
 
 interface UseImageSearchReturn {
@@ -19,6 +22,7 @@ interface UseImageSearchReturn {
   isLoading: boolean
   error: string | null
   search: (query: string) => Promise<void>
+  smartSearch: (eventTitle: string, eventContent: string) => Promise<void>
 }
 
 export function useImageSearch(): UseImageSearchReturn {
@@ -68,5 +72,45 @@ export function useImageSearch(): UseImageSearchReturn {
     }
   }, [])
 
-  return { images, isLoading, error, search }
+  const smartSearch = useCallback(async (eventTitle: string, eventContent: string) => {
+    if (abortRef.current) {
+      abortRef.current.abort()
+    }
+
+    if (!eventTitle.trim()) {
+      setImages([])
+      return
+    }
+
+    const controller = new AbortController()
+    abortRef.current = controller
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const params = new URLSearchParams({ eventTitle, eventContent })
+      const response = await fetch(`/api/images/search-smart?${params}`, {
+        signal: controller.signal,
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to search images')
+      }
+
+      const data = await response.json()
+      setImages(data.images)
+    } catch (err) {
+      if (err instanceof Error && err.name === 'AbortError') {
+        return
+      }
+      setError(err instanceof Error ? err.message : 'Search failed')
+      setImages([])
+    } finally {
+      setIsLoading(false)
+      abortRef.current = null
+    }
+  }, [])
+
+  return { images, isLoading, error, search, smartSearch }
 }

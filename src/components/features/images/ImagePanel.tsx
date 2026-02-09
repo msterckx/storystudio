@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useImageSearch, SearchImage } from '@/hooks/useImageSearch'
 import { useEventImages, SelectedImageData } from '@/hooks/useEventImages'
 import { useSlidePreview } from '@/hooks/useSlidePreview'
-import { extractSearchTerms } from '@/lib/images/search-terms'
 import { getThemeById } from '@/lib/preview/themes'
 import { ImageGrid } from './ImageGrid'
 import { SelectedImages } from './SelectedImages'
@@ -43,7 +42,7 @@ export function ImagePanel({
   customSearchQuery,
   onSearchQueryUsed,
 }: ImagePanelProps) {
-  const { images, isLoading: searchLoading, search } = useImageSearch()
+  const { images, isLoading: searchLoading, search, smartSearch } = useImageSearch()
   const {
     selectedImages,
     dismissedIds,
@@ -103,12 +102,11 @@ export function ImagePanel({
   useEffect(() => {
     if (!eventId || !eventTitle) return
 
-    const terms = extractSearchTerms(eventTitle, eventContent)
-    if (terms && terms !== lastSearchRef.current) {
-      lastSearchRef.current = terms
-      search(terms)
+    if (eventId !== lastSearchRef.current) {
+      lastSearchRef.current = eventId
+      smartSearch(eventTitle, eventContent)
     }
-  }, [eventId, eventTitle, eventContent, search])
+  }, [eventId, eventTitle, eventContent, smartSearch])
 
   // Handle custom search query from command bar
   useEffect(() => {

@@ -8,6 +8,7 @@ export interface WikimediaImage {
   sourceUrl: string
   license: string
   title: string
+  description: string
   creator: string
   date: string
 }
@@ -37,6 +38,17 @@ interface WikimediaResponse {
 
 function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '').trim()
+}
+
+function cleanTitle(raw: string): string {
+  let title = stripHtml(raw)
+  // Remove file extensions (e.g. ".jpg", ".png")
+  title = title.replace(/\.\w{2,4}$/, '')
+  // Replace underscores with spaces
+  title = title.replace(/_/g, ' ')
+  // Collapse multiple spaces
+  title = title.replace(/\s+/g, ' ').trim()
+  return title
 }
 
 export async function searchWikimediaImages(
@@ -87,7 +99,8 @@ export async function searchWikimediaImages(
       source: 'Wikimedia Commons',
       sourceUrl: info.descriptionurl,
       license: meta.LicenseShortName?.value || 'Unknown',
-      title: meta.ObjectName?.value || page.title.replace(/^File:/, ''),
+      title: cleanTitle(meta.ObjectName?.value || page.title.replace(/^File:/, '')),
+      description: meta.ImageDescription?.value ? stripHtml(meta.ImageDescription.value) : '',
       creator: meta.Artist?.value ? stripHtml(meta.Artist.value) : '',
       date: meta.DateTimeOriginal?.value || '',
     })

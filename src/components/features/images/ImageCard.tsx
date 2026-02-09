@@ -45,20 +45,33 @@ export function ImageCard({ image, isSelected, onSelect, onDismiss, onInspect }:
         )}
       </div>
 
-      {/* Source badge */}
-      <div className="absolute top-1 left-1">
+      {/* Source badge and relevance indicator */}
+      <div className="absolute top-1 left-1 flex items-center gap-1">
         <span className="inline-block px-1.5 py-0.5 text-[10px] font-medium bg-black/60 text-white rounded">
           {image.source}
         </span>
+        {image.relevanceScore != null && (
+          <span
+            className={`inline-block w-2 h-2 rounded-full ${
+              image.relevanceScore >= 70 ? 'bg-green-400' : 'bg-yellow-400'
+            }`}
+            title={`Relevance: ${image.relevanceScore}${image.relevanceReason ? ` — ${image.relevanceReason}` : ''}`}
+          />
+        )}
       </div>
 
       {/* Hover overlay with actions */}
       {isHovered && (
         <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-2 cursor-pointer" onClick={onInspect}>
-          {/* Title */}
+          {/* Title, description, and relevance reason */}
           {image.title && (
-            <p className="text-xs text-white mb-2 line-clamp-2">{image.title}</p>
+            <p className="text-xs text-white font-medium line-clamp-2">{image.title}</p>
           )}
+          {image.relevanceReason ? (
+            <p className="text-[10px] text-gray-200 italic line-clamp-2 mt-0.5">{image.relevanceReason}</p>
+          ) : image.description ? (
+            <p className="text-[10px] text-gray-200 line-clamp-2 mt-0.5">{image.description}</p>
+          ) : null}
 
           {/* Actions */}
           <div className="flex gap-1">

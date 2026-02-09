@@ -172,6 +172,15 @@ export function ImageInspector({
           {image.title && (
             <MetadataField label="Title" value={image.title} />
           )}
+          {image.description && (
+            <MetadataField label="Description" value={image.description} />
+          )}
+          {image.relevanceReason && (
+            <div>
+              <p className="text-xs text-gray-400 mb-1">Why this image</p>
+              <p className="text-sm text-gray-200 italic">{image.relevanceReason}</p>
+            </div>
+          )}
           {image.creator && (
             <MetadataField label="Creator" value={image.creator} />
           )}
